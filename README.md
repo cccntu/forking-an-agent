@@ -1,6 +1,6 @@
 # Forking an AI Agent
 
-This is a MVP implementation of the fork pattern for AI agents.
+This is an MVP implementation of the fork pattern for AI agents.
 
 ## Overview
 
@@ -19,12 +19,12 @@ However, it's like spawning a new process in Unix, it doesn't have the full conv
 
 ## Benefits of Forking
 
-Like `dispatch_agent`, forking can help avoid filling up the context window. Additionally, it provides a number of benefits:
+Like `dispatch_agent`, forking can help avoid filling up the context window. Additionally, it offers several key benefits:
 
 1. **Shared Context**: Children agents can have the full context of the main agent, so the children can immediately have the full context without additional prompting or tool calls.
 2. **Parallel Processing**: Besides the obvious speed advantage, it can also improve the focus vs. performing unrelated tasks in serial.
 3. **Prompt caching**: The whole context window prefix is shared and can be cached, reducing the latency and cost.
-4. **Performance optimization**: Besides prompt caching, the inference could be parallelized, and provide additional speedup & cost reduction, since the shared prefix are being used at the same time. e.g. [Hydragen: High-Throughput LLM Inference with Shared Prefixes](https://arxiv.org/abs/2402.05099)
+4. **Inference optimization**: Beyond prompt caching, inference can be parallelized to provide additional speedup and cost reduction, as shared prefixes are utilized simultaneously. For example, see [Hydragen: High-Throughput LLM Inference with Shared Prefixes](https://arxiv.org/abs/2402.05099)
 
 ## Implementation
 
@@ -55,9 +55,9 @@ else:
 
 ## Implementation Details
 
-- `calculator_agent.py` is a simple base agent with some pre-defined tools.
-- `calculator_fork_agent.py` inherits from `calculator_agent.py` and adds a fork tool.
-- to run it, use `python calculator_fork_agent.py`, it will run a few test cases.
+- `calculator_agent.py` serves as a simple base agent with pre-defined tools.
+- `calculator_fork_agent.py` inherits from `calculator_agent.py` and implements the fork tool.
+- To run it, execute `python calculator_fork_agent.py`, which will run a set of test cases.
 
 
 ## Use cases
@@ -74,9 +74,9 @@ else:
     - This probably requires something like a process manager to control the lifecycle of processes (agents).
 
 - Agent handoff pattern in [OpenAI Swarm](https://github.com/openai/swarm)
-    - It uses tool call to swap the system prompt and tools available, and also support environmental variables.
-    - Handoff also benefit from a shared conversation history, but it's bad for prompt caching, and swapping system prompt is likely to be out of distribution (unless it's trained into the model)
-    - One could extend the agent forking pattern to include some of these features. Or even support handoff after a child process is forked. Similar to Fork-Exec pattern in Unix.
+    - It uses tool calls to swap the system prompt and tools available, and also supports environmental variables.
+    - While handoff benefits from shared conversation history, it is suboptimal for prompt caching, and swapping system prompts may lead to out-of-distribution behavior (unless specifically trained for it).
+    - The agent forking pattern could be extended to incorporate these features, potentially supporting handoff after forking, similar to the Fork-Exec pattern in Unix.
 
 ## License
 
